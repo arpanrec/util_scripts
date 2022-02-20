@@ -5,13 +5,13 @@ __setup_git_interactively() {
 
   read -r -p "Enter Username : [Leave Empty to skip]" __gitconfig_username
 
-  if [[ -n "${__gitconfig_username}"  ]]; then
+  if [[ -n "${__gitconfig_username}" ]]; then
     git config --global user.name "${__gitconfig_username}"
   fi
 
   read -r -p "Enter Email ID : [Leave Empty to skip]" __gitconfig_email
 
-  if [[ -n "${__gitconfig_username}"  ]]; then
+  if [[ -n "${__gitconfig_username}" ]]; then
     git config --global user.email "${__gitconfig_email}"
   fi
 }

@@ -7,4 +7,4 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
 fi
 GPG_TTY=$(tty)
 export GPG_TTY
-gpg-connect-agent updatestartuptty /bye > /dev/null
+gpg-connect-agent updatestartuptty /bye >/dev/null
