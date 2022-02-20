@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
 __gnome_shell_version=$(gnome-shell --version | awk '{ print $3 }')
