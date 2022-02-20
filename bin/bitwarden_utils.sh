@@ -26,6 +26,11 @@ if [ "${current_status}" == "unauthenticated" ]; then
         echo ""
         exit 1
       fi
+      echo ""
+      echo "Logging in to bitwarden cli, Please Wait!!!!!!!!!!!!"
+      echo ""
+      BW_CLIENTID="${__bw_client_id}" BW_CLIENTSECRET="${__bw_client_secret}" bw login --apikey
+      echo ""
       read -r -n1 -p "Press Y/y to save client id and client secret in ${HOME}/.secrets :: " __save_apikeys_in_secrets
       if [ "${__save_apikeys_in_secrets}" == "Y" ] || [ "${__save_apikeys_in_secrets}" == "y" ]; then
         sed -i '/export BW_CLIENTID=*/d' "${HOME}/.secrets"
@@ -33,11 +38,6 @@ if [ "${current_status}" == "unauthenticated" ]; then
         echo "export BW_CLIENTID=${__bw_client_id}" >>"${HOME}/.secrets"
         echo "export BW_CLIENTSECRET=${__bw_client_secret}" >>"${HOME}/.secrets"
       fi
-      echo ""
-      echo "Logging in to bitwarden cli, Please Wait!!!!!!!!!!!!"
-      echo ""
-      BW_CLIENTID="${__bw_client_id}" BW_CLIENTSECRET="${__bw_client_secret}" bw login --apikey
-
     else
       echo ""
       echo "Client ID and Client Secret found in environment"
@@ -123,6 +123,7 @@ if [ "${__is_download_openssh_key}" == "Y" ] || [ "${__is_download_openssh_key}"
         if [ "${__overwrite_keyfile}" == "y" ] || [ "${__overwrite_keyfile}" == "Y" ]; then
           bw get attachment --itemid "${__item_id}" "${attachment_id}" --raw \
             >"${__expected_file_save_path}"
+          chmod 600 "${__expected_file_save_path}"
         else
           __expected_file_save_path=${__ssh_key_directory}/${filename}_$(date +%s)
           echo ""
@@ -130,9 +131,11 @@ if [ "${__is_download_openssh_key}" == "Y" ] || [ "${__is_download_openssh_key}"
           echo ""
           bw get attachment --itemid "${__item_id}" "${attachment_id}" --raw \
             >"${__expected_file_save_path}"
+          chmod 600 "${__expected_file_save_path}"
         fi
       else
         bw get attachment --itemid "${__item_id}" "${attachment_id}" --raw >"${__expected_file_save_path}"
+        chmod 600 "${__expected_file_save_path}"
       fi
 
     done
