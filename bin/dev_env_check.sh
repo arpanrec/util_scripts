@@ -16,7 +16,9 @@ __select_gpg_key() {
   __keys_arr=()
 
   if [ "${#gpgkeys[@]}" -lt 1 ] || [[ "${gpgkeys}" == "" ]]; then
+    echo ""
     echo "no Keys found"
+    echo ""
   else
     int_con=0
     echo ""
