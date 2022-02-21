@@ -1,6 +1,42 @@
 #!/usr/bin/env bash
 set -e
 
+__select_gpg_key() {
+  gpg --list-secret-keys --keyid-format LONG
+
+  list_private_keys=$(gpg --list-secret-keys --keyid-format LONG)
+
+  gpgkeys=$(
+    gpg --with-colons --fingerprint |
+      grep -B1 "^uid" |
+      grep "^fpr" |
+      awk -F: '$1 == "fpr" {print $10;}'
+  )
+
+  __keys_arr=()
+
+  if [ "${#gpgkeys[@]}" -lt 1 ] || [[ "${gpgkeys}" == "" ]]; then
+    echo "no Keys found"
+  else
+    int_con=0
+    echo ""
+    for key in ${gpgkeys}; do
+      last_8_char=$(echo "${key}" | tail -c 15)
+      if [[ $list_private_keys =~ ${last_8_char} ]]; then
+        echo "Press ${int_con} using ${key} as gpg sign key"
+        int_con=$((int_con + 1))
+        __keys_arr+=("${key}")
+      fi
+    done
+    read -r -n 1 -p "Enter exact number " __gpg_key_index_in_array
+    echo ""
+    if [[ -n ${__gpg_key_index_in_array} ]]; then
+      git config --global user.signingkey "${__keys_arr[$__gpg_key_index_in_array]}"
+    fi
+  fi
+
+}
+
 __setup_git_interactively() {
 
   read -r -p "Enter Username, [Leave Empty to skip] :: " __gitconfig_username
@@ -15,10 +51,13 @@ __setup_git_interactively() {
     git config --global user.email "${__gitconfig_email}"
   fi
 
-  read -r -n1 -p "Press y to Enable GPG key Sign :: " __gitconfig_enable_gpg
+  read -r -n1 -p "Press Y/N to Enable GPG key Sign :: " __gitconfig_enable_gpg
 
   if [[ "${__gitconfig_enable_gpg}" == Y || "${__gitconfig_enable_gpg}" == y ]]; then
     git config --global commit.gpgsign true
+    __select_gpg_key
+  elif [[ "${__gitconfig_enable_gpg}" == N || "${__gitconfig_enable_gpg}" == n ]]; then
+    git config --global commit.gpgsign false
   fi
 
 }
