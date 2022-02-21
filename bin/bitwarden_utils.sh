@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -e
 
+pre_pro=(bw jq gpg2)
+for prog in "${pre_pro[@]}"; do
+    if ! hash "${prog}" &>/dev/null; then
+        echo "${prog}" not Installed
+        exit 1
+    fi
+done
+
 __get_current_status() {
   __ss="$(bw status --raw | jq .status -r)"
   echo "${__ss}"
