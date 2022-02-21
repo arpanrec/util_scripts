@@ -39,25 +39,35 @@ __select_gpg_key() {
 
 __setup_git_interactively() {
 
+  echo "Git Username, Current Value: $(git config --global user.name)"
   read -r -p "Enter Username, [Leave Empty to skip] :: " __gitconfig_username
 
   if [[ -n "${__gitconfig_username}" ]]; then
     git config --global user.name "${__gitconfig_username}"
   fi
 
+  echo "Git EmailID, Current Value: $(git config --global user.email)"
   read -r -p "Enter Email ID, [Leave Empty to skip] :: " __gitconfig_email
 
   if [[ -n "${__gitconfig_email}" ]]; then
     git config --global user.email "${__gitconfig_email}"
   fi
 
-  read -r -n1 -p "Press Y/N to Enable GPG key Sign :: " __gitconfig_enable_gpg
+  echo "Git sign commints with gpg keys, Current Value: $(git config --global commit.gpgsign)"
+  read -r -n1 -p "Press Y/N to Enable or Disable, [Leave Empty to skip] :: " __gitconfig_enable_gpg
 
   if [[ "${__gitconfig_enable_gpg}" == Y || "${__gitconfig_enable_gpg}" == y ]]; then
     git config --global commit.gpgsign true
-    __select_gpg_key
   elif [[ "${__gitconfig_enable_gpg}" == N || "${__gitconfig_enable_gpg}" == n ]]; then
     git config --global commit.gpgsign false
+  fi
+
+  echo ""
+  echo "Git GPG key id: $(git config --global user.signingkey)"
+  read -r -n1 -p "Press Y to change, [Leave Empty to skip] :: " __gitconfig_key_id
+
+  if [[ "${__gitconfig_key_id}" == Y || "${__gitconfig_key_id}" == y ]]; then
+    __select_gpg_key
   fi
 
 }
