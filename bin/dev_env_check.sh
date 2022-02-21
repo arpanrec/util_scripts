@@ -104,6 +104,13 @@ if [[ "${__wish_to_update_gitconfig}" == "Y" || "${__wish_to_update_gitconfig}" 
     ;;
 
   *)
+    echo ""
+    echo "Press Y to Delete the existing gitconfig"
+    read -r -n1 -p "Press any other key to update the existing git config :: " __delete_existing_gitconfig
+
+    if [[ "${__delete_existing_gitconfig}" == Y || "${__delete_existing_gitconfig}" == y ]]; then
+      rm -rf "${HOME}/.gitconfig"
+    fi
     __setup_git_interactively
     ;;
   esac
@@ -114,12 +121,10 @@ __looksgood() {
   read -r -n 1 -p "🤔🤔 Press y/Y if all is looking good? : 🤔🤔" __looks_good
   if [[ "$__looks_good" == "Y" || "$__looks_good" == "y" ]]; then
     echo ""
-    echo ""
     echo "💯💯 Great  💯💯"
     echo ""
     sleep 1
   else
-    echo ""
     echo ""
     echo "🤬🤬 Go and fix the problem then retry  🤬🤬"
     echo ""
@@ -128,6 +133,7 @@ __looksgood() {
   fi
 }
 
+echo ""
 echo "################################################################################################"
 echo "#####################                  Java                      ###############################"
 echo "################################################################################################"
@@ -221,3 +227,4 @@ echo ""
 echo "################################################################################################"
 echo "#####################                  Java                      ###############################"
 echo "################################################################################################"
+echo ""
