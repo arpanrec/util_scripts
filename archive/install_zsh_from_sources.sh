@@ -27,9 +27,9 @@ if [[ "$(uname -m)" == 'x86_64' ]]; then
 fi
 
 echo ""
-read -n1 -p "Enter \"YES\" to install ncurses $NCURSES_VERSION (Press any other key to Skip*) : " install_ncurses
+read -r -p "Enter \"YES\" to install ncurses $NCURSES_VERSION (Press any other key to Skip*) : " install_ncurses
 echo ""
-read -n1 -p "Enter \"YES\" to install zsh $ZSH_VERSION (Press any other key to Skip*) : " install_zsh
+read -r -p "Enter \"YES\" to install zsh $ZSH_VERSION (Press any other key to Skip*) : " install_zsh
 echo ""
 
 if [[ "$install_ncurses" == "YES" ]]; then
