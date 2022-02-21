@@ -6,6 +6,8 @@ __get_current_status() {
   echo "${__ss}"
 }
 
+touch "${HOME}/.secrets"
+
 current_status=$(__get_current_status)
 
 if [ "${current_status}" == "unauthenticated" ]; then
