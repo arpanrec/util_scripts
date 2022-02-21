@@ -96,7 +96,9 @@ if [ "${current_status}" == "locked" ]; then
   fi
 fi
 
-if [ "unlocked" != "$(bw status --raw | jq .status -r)" ]; then
+current_status=$(__get_current_status)
+
+if [ "${current_status}" != "unlocked" ]; then
   echo "bitwarden cli is not unlocked"
   exit 0
 fi
@@ -156,7 +158,7 @@ fi
 #############################################################################################################################
 #############################################################################################################################
 echo ""
-echo "Will download attachment with name \"private.asc\" with entry name containing \"GPG Certificate\""
+echo "Will download attachment with entry name containing \"GPG Certificate\""
 echo "Password fiend should contain the GPG certificate password"
 read -r -n1 -p "Download GPG Certificate from bitwarden : [y/n] " __is_download_gpg_cert
 echo ""
