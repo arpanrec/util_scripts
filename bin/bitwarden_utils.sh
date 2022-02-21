@@ -154,6 +154,9 @@ if [ "${__is_download_gpg_cert}" == "Y" ] || [ "${__is_download_gpg_cert}" == "y
 
   bw sync
 
+  mkdir -p "${HOME}/.gnupg"
+  chmod 700 "${HOME}/.gnupg"
+
   for item in $(bw list items --search 'GPG Certificate' --raw | jq -r -c '.[] | @base64'); do
     item=$(echo "${item}" | base64 --decode)
     __item_id=$(echo "${item}" | jq -r .id)

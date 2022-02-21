@@ -3,17 +3,24 @@ set -e
 
 __setup_git_interactively() {
 
-  read -r -p "Enter Username : [Leave Empty to skip]" __gitconfig_username
+  read -r -p "Enter Username, [Leave Empty to skip] :: " __gitconfig_username
 
   if [[ -n "${__gitconfig_username}" ]]; then
     git config --global user.name "${__gitconfig_username}"
   fi
 
-  read -r -p "Enter Email ID : [Leave Empty to skip]" __gitconfig_email
+  read -r -p "Enter Email ID, [Leave Empty to skip] :: " __gitconfig_email
 
-  if [[ -n "${__gitconfig_username}" ]]; then
+  if [[ -n "${__gitconfig_email}" ]]; then
     git config --global user.email "${__gitconfig_email}"
   fi
+
+  read -r -n1 -p "Press y to Enable GPG key Sign :: " __gitconfig_enable_gpg
+
+  if [[ "${__gitconfig_enable_gpg}" == Y || "${__gitconfig_enable_gpg}" == y ]]; then
+    git config --global commit.gpgsign true
+  fi
+
 }
 
 if [[ -f "${HOME}/.gitconfig" ]]; then
