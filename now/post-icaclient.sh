@@ -2,6 +2,12 @@
 set -ex
 
 __domain_off=
+
+if [[ -z "${__domain_off}" ]]; then
+    echo "variable __domain_off missign"
+    exit 1
+fi
+
 __domain_on=433
 __ica_default_ca_path="${HOME}/ICAClient/linuxx64/keystore/cacerts"
 mkdir -p "${__ica_default_ca_path}"
