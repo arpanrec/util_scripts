@@ -3,10 +3,10 @@ set -e
 
 pre_pro=(bw jq gpg2)
 for prog in "${pre_pro[@]}"; do
-    if ! hash "${prog}" &>/dev/null; then
-        echo "${prog}" not Installed
-        exit 1
-    fi
+  if ! hash "${prog}" &>/dev/null; then
+    echo "${prog}" not Installed
+    exit 1
+  fi
 done
 
 __get_current_status() {
@@ -73,6 +73,7 @@ if [ "${current_status}" == "locked" ]; then
     echo ""
     exit 1
   fi
+  echo ""
   echo "Please Wait!!!!!!!!!!!!"
   echo ""
   __bw_session_id=$(bw unlock "${__bw_master_password}" --raw)
