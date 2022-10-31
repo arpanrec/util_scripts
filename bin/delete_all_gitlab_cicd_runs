@@ -1,0 +1,16 @@
+#!/usr/bin/python3
+
+import gitlab
+
+print("Enter Gitlab personal token")
+private_token = input()
+
+print("Enter Project ID")
+project_id = input()
+
+gl = gitlab.Gitlab(private_token=private_token)
+project = gl.projects.get(project_id)
+pipelines = project.pipelines.list(iterator=True)
+for pipeline in pipelines:
+    print(f"Deleting pipeline f{pipeline}")
+    pipeline.delete()
